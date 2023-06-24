@@ -1,5 +1,6 @@
 import json
 import os
+import requests
 import openai
 import urllib.parse
 
@@ -27,11 +28,14 @@ def lambda_handler(event, context):
     )
     # Extract the generated text
     text = response['choices'][0]['message']['content']
+    
+    # Send the result to the webhook
+    requests.post('https://myjarvis-5485.twil.io/myJarvisMessenger', json={'message': text})
 
     # Return Twilio compatible response
     return {
         'statusCode': 200,
-        'body': json.dumps({'message': text}),
+        'body': json.dumps({'message': "Your request is being processed. This is a placeholder response."}),
         'headers': {
             'Content-Type': 'application/json',
             'Access-Control-Allow-Origin': '*'
