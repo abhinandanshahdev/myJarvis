@@ -57,8 +57,8 @@ def lambda_handler(event, context):
     chat_history += "\nHuman: " + human_input + "\nChatbot: " + response
     chat_history_obj.put(Body=json.dumps(chat_history))
 
-    # Send the result to the webhook
-    requests.post('https://myjarvis-5485.twil.io/myJarvisMessenger', json={'message': response})
+    # Send the result to the webhook - be sure to change this url in your code
+    requests.post('https://twiliourl/myJarvisMessenger', json={'message': response})
 
     # Return Twilio compatible response
     return {
