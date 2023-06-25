@@ -37,7 +37,7 @@ def lambda_handler(event, context):
     print("Response from the agent: ", response)
     
     # Send the result to the webhook
-    requests.post('https://myjarvis-5485.twil.io/myJarvisMessenger', json={'message': response['output']})
+    requests.post('https://twiliomessangerfunctionurl/myJarvisMessenger', json={'message': response['output']})
 
     # Return Twilio compatible response
     return {
