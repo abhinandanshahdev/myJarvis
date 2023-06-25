@@ -30,7 +30,7 @@ def lambda_handler(event, context):
     text = response['choices'][0]['message']['content']
     
     # Send the result to the webhook
-    requests.post('https://myjarvis-5485.twil.io/myJarvisMessenger', json={'message': text})
+    requests.post('https://twiliomessangerfunctionurl/myJarvisMessenger', json={'message': text})
 
     # Return Twilio compatible response
     return {
