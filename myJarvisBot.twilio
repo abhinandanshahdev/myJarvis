@@ -1,23 +1,23 @@
-const axios = require('axios'); 
+//twilio has a default timeout of 10 seconds, this is not good for GPT operations, so have to split the serverless functions in 2, one sends request to AWS API Gw, the other will process response.
+const axios = require('axios');
 
-exports.handler = function(context, event, callback) {
+exports.handler = async function(context, event, callback) {
     let twiml = new Twilio.twiml.MessagingResponse();
 
     console.log("I got called, here is the message body:");
     console.log(event.Body);
 
-    axios.post('https://yourawslambdaAPIURLhere/prod/ask', {
-        body: event.Body
-    })
-    .then(res => {
-        console.log('Message sent to OpenAI API: ', event.Body);  // Logs the prompt sent to OpenAI
-        console.log('API Response: ', res.data);  // Logging the API response
-        let message = JSON.parse(res.data.body).message;  // Extract message from JSON
-        twiml.message(message);
-        callback(null, twiml);
-    })
-    .catch(err => {
-        console.log('Error: ', err);  // Logging any errors
-        callback("Sorry, something went wrong");
-    });
+    // Send the user's message to your Lambda function.
+    try {
+        const res = await axios.post('https://youawsapigwurl/prod/ask', {
+            body: event.Body
+        });
+        console.log('Response from Lambda: ', res.data);
+    } catch (err) {
+        console.log('Error: ', err);  // Log any errors
+    }
+
+    // Immediately return a response to Twilio. You might want to customize this message.
+    //twiml.message("Your request was processed, but it may have failed with an error");
+    callback(null, twiml);
 };
